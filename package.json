@@ -1,0 +1,22 @@
+{
+  "name": "excel3",
+  "version": "1.0.0",
+  "description": "Pure JavaScript application",
+  "main": "webpack.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Salieri36/excel.git"
+  },
+  "keywords": [
+    "js"
+  ],
+  "author": "Burlaka Roman <36salieri@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Salieri36/excel/issues"
+  },
+  "homepage": "https://github.com/Salieri36/excel#readme"
+}
