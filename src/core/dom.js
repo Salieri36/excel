@@ -9,9 +9,8 @@ class Dom {
         if (typeof html === 'string') {
             this.$el.innerHTML = html
             return this
-        } else {
-            return this.$el.outerHTML.trim()
         }
+        return this.$el.outerHTML.trim()
     }
 
     append(node) {
@@ -20,10 +19,11 @@ class Dom {
         }
         if (Element.prototype.append) {
             this.$el.append(node)
+            return this
         } else {
             this.$el.appendChild(node)
+            return this
         }
-        return this
     }
 
     on(eventType, callback) {
@@ -35,6 +35,27 @@ class Dom {
         this.$el.removeEventListener(eventType, callback)
         return this
     }
+
+    closest(selector) {
+        return $(this.$el.closest(selector))
+    }
+
+    getCoords() {
+        return this.$el.getBoundingClientRect()
+    }
+
+    get data() {
+        return this.$el.dataset
+    }
+
+    findAll(selector) {
+        return document.querySelectorAll(selector)
+    }
+
+    css(styles = {}) {
+        Object.keys(styles).forEach(key => this.$el.style[key] = styles[key])
+        return this
+    }
 }
 
 export function $(selector) {
@@ -42,7 +63,7 @@ export function $(selector) {
 }
 
 $.create = (tagName, classes = '') => {
-    const $el = document.createElement(tagName)
-    $el.classList.add(classes)
-    return $($el)
+    const el = document.createElement(tagName)
+    el.classList.add(classes)
+    return $(el)
 }
