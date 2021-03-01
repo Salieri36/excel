@@ -1,44 +1,45 @@
 import { $ } from '@core/dom'
 
-export function resizeHandle($root, event) {
-    event.preventDefault()
-    const $resizer = $(event.target)
-    const $parent = $resizer.closest(`[data-type="resizable"]`)
+export function tableResizing(event, $root) {
+    const $target = $(event.target)
+    const $parent = $target.closest(`[data-type="resizable"]`)
     const coords = $parent.getCoords()
-    const type = $resizer.data.resize
+    const type = $target.data.resize
     let value
-    const sideProp = type === 'col' ? 'bottom' : 'right'
-    $resizer.css({
+    const sideProps = type === 'col' ? 'bottom' : 'right'
+    $target.css({
         opacity: 1,
-        [sideProp]: '-5000px'
+        [sideProps]: '-5000px'
     })
 
     onmousemove = (e) => {
+        e.preventDefault()
         if (type === 'col') {
             const delta = e.pageX - coords.right
             value = coords.width + delta
-            $resizer.css({right: -delta + 'px'})
+            $target.css({right: -delta + 'px'})
         } else {
             const delta = e.pageY - coords.bottom
             value = coords.height + delta
-            $resizer.css({bottom: -delta + 'px'})
+            $target.css({bottom: -delta + 'px'})
         }
     }
 
-    onmouseup = (e) => {
+    onmouseup = () => {
         onmousemove = null
         onmouseup = null
-        if (type === 'col') {
-            $parent.css({width: value + 'px'})
-            $root.findAll(`[data-cell="${$parent.data.cell}"]`)
-                .forEach(cell => cell.style.width = value + 'px')
-        } else {
-            $parent.css({height: value + 'px'})
-        }
-        $resizer.css({
+        $target.css({
             opacity: 0,
             right: 0,
             bottom: 0
         })
+        if (type === 'col') {
+            $parent.css({width: value + 'px'})
+            const $cells = $root
+                .findAll(`[data-col="${$parent.data.col}"]`)
+            $cells.forEach($cell => $cell.style.width = value + 'px')
+        } else {
+            $parent.css({height: value + 'px'})
+        }
     }
 }
