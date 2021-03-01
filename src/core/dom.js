@@ -10,7 +10,20 @@ class Dom {
             this.$el.innerHTML = html
             return this
         }
-        return this.$el.outerHTML.trim()
+
+        return this.$el.outerHTML
+    }
+
+    text(text) {
+        if (typeof text === 'string') {
+            this.$el.textContent = text
+            return this
+        }
+        if (this.$el.tagName.toLowerCase() === 'input') {
+            return this.$el.value.trim()
+        }
+
+        return this.$el.textContent.trim()
     }
 
     append(node) {
@@ -26,34 +39,62 @@ class Dom {
         }
     }
 
-    on(eventType, callback) {
-        this.$el.addEventListener(eventType, callback)
-        return this
+    on(eventName, callback) {
+        return this.$el.addEventListener(eventName, callback)
     }
 
-    off(eventType, callback) {
-        this.$el.removeEventListener(eventType, callback)
-        return this
-    }
-
-    closest(selector) {
-        return $(this.$el.closest(selector))
-    }
-
-    getCoords() {
-        return this.$el.getBoundingClientRect()
+    off(eventName, callback) {
+        return this.$el.removeEventListener(eventName, callback)
     }
 
     get data() {
         return this.$el.dataset
     }
 
-    findAll(selector) {
-        return document.querySelectorAll(selector)
+    getCoords() {
+        return this.$el.getBoundingClientRect()
+    }
+
+    closest(selector) {
+        return $(this.$el.closest(selector))
     }
 
     css(styles = {}) {
         Object.keys(styles).forEach(key => this.$el.style[key] = styles[key])
+        return this
+    }
+
+    findAll(selector) {
+        return document.querySelectorAll(selector)
+    }
+
+    find(selector) {
+        return $(document.querySelector(selector))
+    }
+
+    addClass(className) {
+        this.$el.classList.add(className)
+        return this
+    }
+
+    removeClass(className) {
+        this.$el.classList.remove(className)
+        return this
+    }
+
+    id(parse) {
+        if (parse) {
+            const parsed = this.id().split(':')
+            return {
+                row: +parsed[0],
+                col: +parsed[1]
+            }
+        }
+        return this.data.id
+    }
+
+    focus() {
+        this.$el.focus()
         return this
     }
 }

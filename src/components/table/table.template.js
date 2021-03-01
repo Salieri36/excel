@@ -1,7 +1,7 @@
 const CODES = {A: 65, Z: 90}
 const colsCount = CODES.Z - CODES.A + 1
 
-export function createTable(rowCount = 20) {
+export function createTable(rowsCount = 25) {
     const rows = []
     function toChar(_, index) {
         return String.fromCharCode(CODES.A + index)
@@ -10,13 +10,13 @@ export function createTable(rowCount = 20) {
         .fill('')
         .map(toChar)
         .map(createCol)
-        .join('')
+        .join('').trim()
     rows.push(createRow(null, cols))
 
-    for (let i = 0; i < rowCount; i++) {
+    for (let i = 0; i < rowsCount; i++) {
         const cells = new Array(colsCount)
             .fill('')
-            .map(createCell)
+            .map(createCell(i))
             .join('')
         rows.push(createRow(i + 1, cells))
     }
@@ -24,14 +24,14 @@ export function createTable(rowCount = 20) {
 }
 
 function createRow(index, content) {
-    const resizer = index
-    ? `<div class="row-resize" data-resize="row"></div>`
+    const resize = index
+    ? `<div class="row-resize"  data-resize="row"></div>`
     : ''
     return `
         <div class="row" data-type="resizable">
             <div class="row-info">
-                ${index ? index : ''}
-                ${resizer}
+                ${index ? index : '' }
+                ${resize}
             </div>
             <div class="row-data">${content}</div>
         </div>
@@ -40,15 +40,18 @@ function createRow(index, content) {
 
 function createCol(content, index) {
     return `
-        <div class="column" data-type="resizable" data-cell="${index}">
+        <div class="column" data-type="resizable" data-col="${index}">
             ${content}
             <div class="col-resize" data-resize="col"></div>
         </div>
     `
 }
 
-function createCell(_, index) {
-    return `
-        <div class="cell" contenteditable data-cell="${index}"></div>
-    `
+function createCell(row) {
+    return function(_, index) {
+        return `
+            <div class="cell" contenteditable data-col="${index}"
+            data-id="${row}:${index}" data-type="cell"></div>
+        `
+    }
 }
