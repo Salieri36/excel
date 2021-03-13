@@ -1,4 +1,3 @@
-import { storage } from '@core/utils'
 import { defaultStyles, defaultTitle } from '../constants'
 
 const defaultState = {
@@ -8,15 +7,16 @@ const defaultState = {
     dataState: {},
     stylesState: {},
     currentText: '',
-    currentStyles: defaultStyles
+    currentStyles: defaultStyles,
+    openedDate: new Date().toJSON()
 }
 
-const normalize = state => ({
+const normolize = state => ({
     ...state,
     currentStyles: defaultStyles,
     currentText: ''
 })
 
-export const initialState = storage('table-resize')
-    ? normalize(storage('table-resize'))
-    : defaultState
+export function normolizeInitialState(state) {
+    return state ? normolize(state) : {...defaultState}
+}
