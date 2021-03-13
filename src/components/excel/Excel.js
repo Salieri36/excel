@@ -30,6 +30,7 @@ export class Excel {
     }
 
     init() {
+        this.store.dispatch(updateDate())
         this.subscriber.subscribeComponents(this.components)
         this.components.forEach(component => component.init())
     }
