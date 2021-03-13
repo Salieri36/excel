@@ -3,7 +3,8 @@ import {
     CHANGE_STYLES,
     CHANGE_TITLE,
     CURRENT_TEXT,
-    TABLE_RESIZE
+    TABLE_RESIZE,
+    UPDATE_DATE
 } from './types'
 
 export function tableResizeAC(data) {
@@ -38,5 +39,11 @@ export function changeTitleAC(data) {
     return {
         type: CHANGE_TITLE,
         data
+    }
+}
+
+export function updateDateAC() {
+    return {
+        type: UPDATE_DATE
     }
 }
